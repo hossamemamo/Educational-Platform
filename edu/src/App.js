@@ -1,6 +1,6 @@
 import Header from "./components/Header";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-
+import './index.css'
 const theme = createTheme({
   typography: {
     allVariants: {
