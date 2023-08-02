@@ -6,7 +6,6 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Logo from "../assets/Logo.png";
 
 import SearchBar from "./SearchBar";
-
 const green="#28A19C";
 const white="#FFFFFF";
 

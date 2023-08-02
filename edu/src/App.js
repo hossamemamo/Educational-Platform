@@ -1,4 +1,5 @@
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './index.css'
 const theme = createTheme({
@@ -14,12 +15,10 @@ const theme = createTheme({
 
 function App() {
   return (
-    <div >
       <ThemeProvider theme={theme}>
           <Header/>
+          <Footer/>
       </ThemeProvider>
-
-    </div>
   );
 }
 
