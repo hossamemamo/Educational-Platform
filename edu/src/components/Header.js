@@ -15,7 +15,8 @@ function Header(){
         <React.Fragment>
             <AppBar sx={{background: white}} style={{minHeight: '102px'}}>
                 <Toolbar  style={{marginTop: "18px",display:'flex',alignItems:'center',justifyContent:'space-evenly'}}>
-            <div>
+
+                    
                 <Box 
             component="img"
             sx={{
@@ -26,7 +27,6 @@ function Header(){
             alt="Your logo."
             src={Logo}
         />
-        </div>
 
     <SearchBar/>
 

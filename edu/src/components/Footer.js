@@ -3,7 +3,6 @@ import {Box,Link,Typography,IconButton,Stack,Grid} from '@mui/material';
 import { BoxStyles } from "./Footer.ts";
 import Logo from '../assets/Logo.png';
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 
   
 
@@ -15,32 +14,11 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 
 function Footer() {
 
-    const theme = createTheme({
-        //v5.0.0
-        typography: {
-            head: {
-                fontFamily: 'Quicksand',
-                textTransform: 'none',
-                fontSize: 30,
-                color:'#28A19C'
-              },
-            labels:{
-                fontFamily: 'Quicksand',
-                fontSize: 20,
-            },
-            footnote:
-            {
-                fontFamily: 'Quicksand',
-                fontSize: 14,
-            }
-        }
-      });
     
 return (
-<ThemeProvider theme={theme}>
     <Box sx={BoxStyles.sx} >
         <Box style={{marginLeft:60,marginTop:60}}>
-        <Grid container spacing={36}  >
+        <Grid container spacing={25}  >
             <Grid item>
                 <Box>
                         <Box 
@@ -161,7 +139,6 @@ return (
 
     </Box>
     
-</ThemeProvider >
 );
 }
 export default Footer;
