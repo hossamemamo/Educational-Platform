@@ -21,7 +21,7 @@ import errimg from '../assets/404.png';
 function CourseCard({course}){
  
 
-    const {img_url,title,review_count,rating,instructors,description,price_after_discount,original_price}=course;
+    const {course_id,img_url,title,review_count,rating,instructors,description,price_after_discount,original_price}=course;
 
 
 
@@ -39,9 +39,18 @@ function CourseCard({course}){
 
     const renderedDescription=showMore?description:(description.length <= 35 ? description : (description.substr(0, 35) + "..."));
 
-    const renderedTitle=(title.length <= 57 ? title : (title.substr(0, 57) + "..."))
+    const renderedTitle=(title.length <= 57 ? title : (title.substr(0, 57) + "..."));
+
+    const renderedPrice=price_after_discount!==original_price?(<Stack direction='row' spacing={3}>
+                                                        <Typography variant='pricing' fontWeight={1000}>
+                                                            $ {price_after_discount}
+                                                        </Typography>
+                                                        <Typography  variant='pricing'  style={{textDecoration: 'line-through'}}>
+                                                            $ {original_price}
+                                                        </Typography>
+                                                    </Stack>):(<Typography variant='pricing' fontWeight={1000}>$ {price_after_discount}</Typography>);
     return(
-            <Card sx={{ maxWidth: 272 }}>
+            <Card sx={{ maxWidth: 272 }} >
 
             <CardMedia
         component="img"
@@ -75,15 +84,7 @@ function CourseCard({course}){
 
         </Typography>
 
-        <Stack direction='row' spacing={3}>
-            <Typography variant='pricing' fontWeight={1000}>
-                $ {price_after_discount}
-            </Typography>
-            <Typography  variant='pricing'  style={{textDecoration: 'line-through'}}>
-                $ {original_price}
-            </Typography>
-        </Stack>
-
+        {renderedPrice}
 
         <Stack direction='row' spacing={3}>
 

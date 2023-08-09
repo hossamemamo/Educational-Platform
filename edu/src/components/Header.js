@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import {AppBar,Toolbar,Box,Button,Stack,IconButton,Modal,Menu,MenuItem } from "@mui/material";
 
+import {
+  Link
+  } from 'react-router-dom'
+
 
 
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -59,18 +63,18 @@ function Header(){
             <AppBar sx={{background: white}} style={{minHeight: '102px'}}>
                 <Toolbar  style={{marginTop: "18px",display:'flex',alignItems:'center',justifyContent:'space-evenly'}}>
 
-                    
-                <Box 
-            component="img"
-            sx={{
-            height: 33,
-            width:150,
-            marginLeft: "80px",
-                  }}
-            alt="Your logo."
-            src={Logo}
-        />
-
+                 <Link to="/">   
+                      <Box 
+                  component="img"
+                  sx={{
+                  height: 33,
+                  width:150,
+                  marginLeft: "80px",
+                        }}
+                  alt="Your logo."
+                  src={Logo}
+              />
+            </Link>
     <SearchBar/>
 
     <Stack spacing={3} direction="row" > 

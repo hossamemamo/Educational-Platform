@@ -20,10 +20,10 @@ function SliderCards({coursesArray}){
     }
     ///
 
-    const renderedTrioCardsDisplay = groupedCourses.map((group) => (
-    <Grid container spacing={10} justifyContent="center">
+    const renderedTrioCardsDisplay = groupedCourses.map((group, groupIndex) => (
+    <Grid container spacing={10} justifyContent="center" key={groupIndex}>
         {group.map((card) => (
-        <Grid item key={card}>
+        <Grid item key={card.course_id}>
             <CourseCard course={card} />
         </Grid>
         ))}

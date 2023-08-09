@@ -1,10 +1,16 @@
 import FirstPage from './Pages/firstPage';
+import SecondPage from './Pages/secondPage';
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from 'react-router-dom'
+
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './index.css'
 
 import { Provider } from 'react-redux';
 import { store } from './store';
-import SecondPage from './Pages/secondPage';
 
 const theme = createTheme({
   //v5.0.0
@@ -92,7 +98,14 @@ function App() {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
 
-        <FirstPage/>          
+
+          <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<FirstPage />} />
+          <Route path="courses" element={<SecondPage />} />
+        </Routes>
+      </BrowserRouter>
+
       </ThemeProvider>
       </Provider>
   );

@@ -1,11 +1,17 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import SliderCards from "../components/SliderCards";
+import CustomTabs from '../components/CustomTabs';
 import {
-    Box, Stack, Typography,Grid
+    Box, Stack, Typography,Button
   } from "@mui/material";
   
 
+import {
+  Link
+  } from 'react-router-dom'
+    
+    
 import img1 from '../assets/img1.jpg';
 import  WhatsAppIcon  from '../assets/whatsapp.png';
 
@@ -14,15 +20,18 @@ import GetCertificate from '../assets/GetCertificate.png';
 import StartLearning from '../assets/StartLearning.png';
 import LaptopGirl from '../assets/laptopGirl.png';
 
-import { useFetchCoursesQuery } from "../store";
+import { useFetchCategoriesQuery, useFetchCoursesQuery } from "../store";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 function FirstPage(){
 
-  const {data,isLoading,isSuccess}=useFetchCoursesQuery();
-  const coursesArray=[];
-  if (isSuccess)
+  const { data: coursesData, isLoading: coursesLoading, isSuccess: coursesSuccess } = useFetchCoursesQuery();
+  const { data: categoryData, isSuccess: categorySuccess } = useFetchCategoriesQuery();
+
+    const coursesArray=[];
+  if (coursesSuccess)
   {
-      let courses_dict=data.data.courses;
+    
+      let courses_dict=coursesData.data.courses;
       let tempObj;
       for (const [key, value] of Object.entries(courses_dict)) {
 
@@ -53,12 +62,7 @@ function FirstPage(){
       }
   }
 
-
-      
-
-
-
-
+  
 
 return(
   <Box>
@@ -196,6 +200,17 @@ return(
       professional goals
 
       </Typography>
+
+                {/* navigate here baby */}
+      {categorySuccess && <CustomTabs params={categoryData.data.subjects}/>}
+    
+        <Box style={{paddingTop:50}}>
+            <Link to="/courses" >
+                <Button variant="contained" style={{height: 58,width:300 ,backgroundColor:"#28A19C"}} >
+                  View More Courses
+                  </Button>
+              </Link> 
+        </Box>
     </Box>
 
       {/* Categories */}
