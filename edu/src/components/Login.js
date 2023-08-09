@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useLogInMutation } from '../store';
 
 import {
   Grid,
@@ -13,24 +14,54 @@ import {
   Box
 } from "@mui/material";
 
-import {Visibility,VisibilityOff} from '@mui/icons-material';
+import {Visibility,VisibilityOff,Cancel} from '@mui/icons-material';
 
-const Login = () => {
+const Login = ({onClose}) => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const [logIn,{data,isLoading,isError,isSuccess,error}]=useLogInMutation();
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
-  
 
-  
-  const [checked, setChecked] = React.useState(true);
+  const [formInput,setFormInput]=useState({
+    email:"toka.ali.inovaeg@gmail.com",
+    password:"12345678"
+  });
 
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
+
+
+const handleCancelButton=(event)=>{
+    onClose();
+};
+
+const handleChange=(e)=>{
+  setFormInput((prevState)=>({
+      ...prevState,
+      [e.target.name] : e.target.value
+  }))
+}
+
+const handleSubmit = async(e)=>{
+  e.preventDefault();
+  await logIn(formInput);
+}
+
+if(isSuccess){
+  console.log(data.data.user_id);
+  localStorage.setItem('userToken',data.data.user_id);
+  handleCancelButton();
+}
 
   return (
-    <Box sx={{ width:350 ,height :350 }}>
+    
+    <Box sx={{ width:'auto' ,height :'auto' }}>
+      <form onSubmit={handleSubmit}>
+      <Box sx={{float:"right"}}>
+        <IconButton onClick={handleCancelButton} >
+          <Cancel/>
+        </IconButton>
+      </Box>
         <Grid
           container
           spacing={3}
@@ -39,17 +70,36 @@ const Login = () => {
           justify="center"
           >
 
+
+
+          <Grid item>
+            
+            <Typography fontWeight={1000} variant="big" >
+                Welcome Back!
+
+            </Typography>
+          </Grid>
+
+          
           <Grid item xs={16} >
             <Stack >
               <Typography variant="footnote" gutterBottom fontWeight={'bold'}>Phone Number or IP Number</Typography>
-              <TextField id="outlined" placeholder="Enter your phone number or IP number" InputProps={{sx: {width:350 ,height:49,fontSize:16}}} ></TextField>
+              <TextField 
+              placeholder="Enter your phone number or IP number" 
+              name="email"
+              value={formInput.email}
+              onChange={handleChange}
+              InputProps={{sx: {width:350 ,height:49,fontSize:16}}} ></TextField>
             </Stack>
           </Grid>
           <Grid item xs={16}>
             <Stack >
               <Typography variant="footnote" gutterBottom fontWeight={'bold'}>Password</Typography>
-              <TextField id="outlined" 
+              <TextField  
               placeholder="Enter your password" 
+              name="password"
+              value={formInput.password}
+              onChange={handleChange}
               type={showPassword ? "text" : "password"} 
               InputProps={{sx: {width:350 ,height:49,fontSize:16},
               endAdornment: (
@@ -80,7 +130,7 @@ const Login = () => {
 
 
           <Grid item  >
-            <Button variant="contained" sx={{height: 58,width:350 ,backgroundColor:"#28A19C"}} > Log in </Button>
+            <Button variant="contained" style={{height: 58,width:350 ,backgroundColor:"#28A19C"}} type="submit" > Log in </Button>
           </Grid>
 
           <Grid item>
@@ -94,6 +144,8 @@ const Login = () => {
 
           </Grid>
           </Grid>
+          </form>
+
         </Box>
 
 );};

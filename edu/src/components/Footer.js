@@ -18,7 +18,7 @@ function Footer() {
 return (
     <Box sx={BoxStyles.sx} >
         <Box style={{marginLeft:60,marginTop:60}}>
-        <Grid container spacing={25}  >
+        <Grid container spacing={20}  >
             <Grid item>
                 <Box>
                         <Box 
