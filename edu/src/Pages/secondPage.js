@@ -4,8 +4,9 @@ import Footer from '../components/Footer';
 import { useFetchCoursesQuery } from "../store";
 
 import {
-    Box, Stack, Typography
+    Box, Stack, Typography,Pagination
   } from "@mui/material";
+import { useState } from "react";
 
 function SecondPage(){
     const {data,isLoading,isSuccess}=useFetchCoursesQuery();
@@ -43,17 +44,29 @@ function SecondPage(){
         }
     }
 
+
+
+    const paginatedArray = [];
+    const itemsPerPage=8;
+    for (let i = 0; i < coursesArray.length; i += itemsPerPage) {
+    const chunk = coursesArray.slice(i, i + itemsPerPage);
+    paginatedArray.push(chunk);
+    }
+    
+
+    const [page,setPage]=useState(1);
+    const handlePageChange = (event,newPage)=>{
+        setPage(newPage);
+    };
+
     return (
         <Box>
             <Header/>
-
-            <Box sx={{paddingTop:15}}>
-                <CourseContainer courses={coursesArray}/>
-            </Box>
-
-
+                <Stack direction={"column"} spacing={1} >
+                    <CourseContainer courses={coursesArray}/>
+                    <Pagination count={paginatedArray.length} size="small" page={page} onChange={handlePageChange} sx={{backgroundColor:'red'}} />
+                </Stack>
             <Footer/>
-
         </Box>
     )
 }

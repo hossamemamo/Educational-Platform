@@ -1,5 +1,5 @@
 import CourseCard from "./CourseCard";
-import {Grid,Box, Typography,IconButton
+import {Grid,Box, 
 } from '@mui/material';
 
 function CourseContainer({courses}){
@@ -15,7 +15,7 @@ function CourseContainer({courses}){
 
   
     return(
-            <Box >
+            <Box sx={{minWidth:1200}} >
             <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} spacing={5} justifyContent="center"  >
                 {renderedCourses}
             </Grid>

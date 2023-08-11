@@ -1,15 +1,29 @@
 import * as React from 'react';
 
-import { Typography,Stack ,Tabs,Tab,Box} from '@mui/material';
+import { Typography ,Tabs,Tab,Box} from '@mui/material';
 import { useFetchFilteredCoursesQuery } from '../store';
 import CourseContainer from './CourseContainer';
 
 function CustomTabs({params}) {
 
+
+
   const [value, setValue] = React.useState(10);
 
-  const labels=params.map((item) => (
-      <Tab key={item.id} label={<Typography variant='tabs'>{item.name}</Typography>} />
+  const labels=params.map((item,key) => (
+      <Tab key={item.id} label={<Typography variant='tabs'>{item.name}</Typography>}
+      
+      style={{
+        fontWeight: 'bold',
+        fontSize: '16px',
+        textTransform: 'none',
+        color: value === key ? 'green' : 'inherit',
+        backgroundColor: value === key ? 'white' : 'transparent',
+        borderRadius: value === key ? '20px' : '0',
+        marginRight: '65px'
+      }}
+
+      />
     ));
     
     const {data,isLoading,isSuccess}=useFetchFilteredCoursesQuery(value);
@@ -20,7 +34,7 @@ function CustomTabs({params}) {
 
         if(courses_dict) // if it have courses
         {
-          for (const [key, value] of Object.entries(courses_dict)) {
+          for (const [, value] of Object.entries(courses_dict)) {
                 let tempObj;
                 console.log(value);
                   tempObj = {
@@ -49,27 +63,43 @@ function CustomTabs({params}) {
   };
 
   return (
-    <Stack direction={'column'} spacing={3}>
-      <Box sx={{ maxWidth: { xs: 320, sm: 2000 }, bgcolor: 'background.paper' }}>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%', // This will make the content take up the full viewport height
+    }}
+    >
+      <Box sx={{ maxWidth: { xs: 320, sm: '70%' }, bgcolor: 'background.paper' }}>
         <Tabs
           value={value}
           onChange={handleChange}
           variant="scrollable"
-          scrollButtons
-          allowScrollButtonsMobile
+          scrollButtons="auto"
           style={{backgroundColor:"#F3F3F3"}}
-          indicator={{background:"#FFFFFF"}}
+          TabIndicatorProps={{
+            style: { display: 'none' },
+          }}
+          TabScrollButtonProps={{
+            style: { color: 'green' }, // Change this color to your desired green color
+          }}
         >
         {labels}
 
         </Tabs>
-      </Box>
-      <Box >
-        <CourseContainer courses={coursesArray}/>
-      </Box>
+    </Box>
+
+    <Box >
+      <CourseContainer courses={coursesArray}/>
+    </Box>
+
+    </Box>
+
+
 
       
-    </Stack>
-  );
+
+);
 }
 export default CustomTabs;
