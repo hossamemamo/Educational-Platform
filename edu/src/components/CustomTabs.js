@@ -1,8 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 
-import { Typography ,Tabs,Tab,Box} from '@mui/material';
+import { Typography ,Tabs,Tab,Box,Stack} from '@mui/material';
 import { useFetchFilteredCoursesQuery } from '../store';
 import CourseContainer from './CourseContainer';
+import CardSkeleton from './CourseSkeleton';
 
 function CustomTabs({params}) {
 
@@ -26,7 +27,8 @@ function CustomTabs({params}) {
       />
     ));
     
-    const {data,isLoading,isSuccess}=useFetchFilteredCoursesQuery(value);
+    const {data,isFetching,isSuccess}=useFetchFilteredCoursesQuery(value);
+
     let coursesArray=[];
     if (isSuccess)
     {
@@ -36,7 +38,6 @@ function CustomTabs({params}) {
         {
           for (const [, value] of Object.entries(courses_dict)) {
                 let tempObj;
-                console.log(value);
                   tempObj = {
                       course_id:value.classified_product.course_id,
                       img_url:value.classified_product.image_url,
@@ -60,7 +61,15 @@ function CustomTabs({params}) {
     coursesArray=coursesArray.slice(0, 4); // take only first 4
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    
   };
+  const renderedSkeleton=<Stack direction={'row'} spacing={5}>
+    <CardSkeleton/>
+    <CardSkeleton/>
+    <CardSkeleton/>
+    <CardSkeleton/>
+
+  </Stack>;
 
   return (
     <Box sx={{
@@ -90,8 +99,8 @@ function CustomTabs({params}) {
         </Tabs>
     </Box>
 
-    <Box >
-      <CourseContainer courses={coursesArray}/>
+    <Box paddingTop={5}>
+      {isFetching ? renderedSkeleton : <CourseContainer courses={coursesArray} />}
     </Box>
 
     </Box>

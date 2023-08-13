@@ -21,7 +21,7 @@ const store = configureStore({
     }
 });
 setupListeners(store.dispatch);
-export {useFetchCategoriesQuery,useFetchCoursesQuery,useFetchFilteredCoursesQuery} from './apis/coursesApi';
+export {useFetchCategoriesQuery,useFetchCoursesQuery,useFetchFilteredCoursesQuery,useFetchCourseDetailsQuery} from './apis/coursesApi';
 
 export {useLogInMutation} from './apis/userApi';
 

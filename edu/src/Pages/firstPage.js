@@ -12,7 +12,7 @@ import {
   } from 'react-router-dom'
     
 
-
+import { useEffect } from "react";
 import img1 from '../assets/img1.jpg';
 import  WhatsAppIcon  from '../assets/whatsapp.png';
 
@@ -23,11 +23,20 @@ import LaptopGirl from '../assets/laptopGirl.png';
 
 import { useFetchCategoriesQuery, useFetchCoursesQuery } from "../store";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CardSkeleton from "../components/CourseSkeleton";
 function FirstPage(){
+  useEffect(() => {
+    window.scrollTo(0, 0); // Reset scroll position when this page is navigated to
+  }, []);
 
   const { data: coursesData, isLoading: coursesLoading, isSuccess: coursesSuccess } = useFetchCoursesQuery();
   const { data: categoryData, isSuccess: categorySuccess } = useFetchCategoriesQuery();
 
+  const renderedSkeleton=<Stack direction={'row'} spacing={5} >
+    <CardSkeleton/>
+    <CardSkeleton/>
+    <CardSkeleton/>
+  </Stack>;
 
     const coursesArray=[];
   if (coursesSuccess)
@@ -64,7 +73,7 @@ function FirstPage(){
       }
   }
 
-  
+
 
 return(
   <Box >
@@ -209,7 +218,7 @@ return(
                 {/* navigate here baby */}
       {categorySuccess && <CustomTabs params={categoryData.data.subjects}/>}
     
-        <Box sx={{paddingTop:3}}>
+        <Box sx={{paddingTop:10}}>
             <Link to="/courses" >
                 <Button variant="contained" style={{height: 58,width:300 ,backgroundColor:"#28A19C"}} >
                   View More Courses
@@ -314,10 +323,9 @@ return(
 
 
     <Box style={{display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:"#F3F3F3"}}>
-      <SliderCards coursesArray={coursesArray}/>
+      {coursesLoading?renderedSkeleton:<SliderCards coursesArray={coursesArray}/>}
     </Box>
     
-
 
     
 
@@ -325,7 +333,6 @@ return(
 
     
     <Footer/>
-    
   </Box>
 );
 

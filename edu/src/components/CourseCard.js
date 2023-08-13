@@ -21,7 +21,7 @@ import errimg from '../assets/404.png';
 function CourseCard({course}){
  
 
-    const {course_id,img_url,title,review_count,rating,instructors,description,price_after_discount,original_price}=course;
+    const {img_url,title,review_count,rating,instructors,description,price_after_discount,original_price}=course;
 
 
 
@@ -58,7 +58,6 @@ function CourseCard({course}){
         image={img_url||errimg}
         alt="Paella dish"
       />
-
       <CardContent>
         <Stack direction='column' spacing={1}>
         {/* cardheader */}
@@ -69,7 +68,6 @@ function CourseCard({course}){
             <Rating name="size-small" value={rating} size="small" precision={0.5} readOnly />
             <Typography variant='rating'> ({review_count})  </Typography>
         </Stack>
-
         {/* instructors */}
         <Typography variant='instructors' style={{minHeight:30 }}>
             {mergedNames.length <= 45 ? mergedNames : (mergedNames.substr(0, 45) + "...")}
@@ -85,7 +83,6 @@ function CourseCard({course}){
         </Typography>
 
         {renderedPrice}
-
         <Stack direction='row' spacing={3}>
 
             <Button variant="outlined" style={{height: 34,width:168 ,color:"#28A19C",borderColor:"#28A19C"}} >
@@ -102,7 +99,6 @@ function CourseCard({course}){
                         height: 23,
                         width:23,
                             }}
-                        alt="Your logo."
                         src={ShoppingCart}
                     />
 

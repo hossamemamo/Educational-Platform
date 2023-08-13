@@ -1,5 +1,6 @@
 import FirstPage from './Pages/firstPage';
 import SecondPage from './Pages/secondPage';
+import CourseDetails from './Pages/CourseDetails';
 import {
   BrowserRouter,
   Routes,
@@ -11,6 +12,7 @@ import './index.css'
 
 import { Provider } from 'react-redux';
 import { store } from './store';
+
 
 const theme = createTheme({
   //v5.0.0
@@ -99,10 +101,11 @@ function App() {
       <ThemeProvider theme={theme}>
 
 
-          <BrowserRouter>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<FirstPage />} />
-          <Route path="courses" element={<SecondPage />} />
+          <Route path="/courses" element={<SecondPage />} />
+          <Route path="/courses/:courseId" element={<CourseDetails/>}/>
         </Routes>
       </BrowserRouter>
 

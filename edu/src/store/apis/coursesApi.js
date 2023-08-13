@@ -41,10 +41,18 @@ const coursesApi= createApi({
                     };
                 }
             })
+            ,fetchCourseDetails:builder.query({ //fetching courses categories
+                query:(course_id)=>{
+                    return{
+                        url:`/courses/${course_id}`,
+                        method:'GET'
+                    };
+                }
+            })
         };
     }
     
 });
 
-export const {useFetchCategoriesQuery,useFetchCoursesQuery,useFetchFilteredCoursesQuery}=coursesApi;
+export const {useFetchCategoriesQuery,useFetchCoursesQuery,useFetchFilteredCoursesQuery,useFetchCourseDetailsQuery}=coursesApi;
 export {coursesApi};

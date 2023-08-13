@@ -1,6 +1,9 @@
 import CourseCard from "./CourseCard";
 import {Grid,Box, 
 } from '@mui/material';
+import {
+    Link
+    } from 'react-router-dom';
 
 function CourseContainer({courses}){
 
@@ -10,7 +13,9 @@ function CourseContainer({courses}){
     const renderedCourses=courses.map((course) =>{
         return(        
         <Grid item key={course.course_id}>
-        <CourseCard course={course}/>
+            <Link to={`/courses/${course.course_id}`} style={{ textDecoration: 'none' }}>
+                <CourseCard course={course} />
+            </Link>
         </Grid>);});
 
   
