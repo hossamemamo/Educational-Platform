@@ -8,7 +8,7 @@ import { useState } from 'react';
 import {
     Box, Stack,Breadcrumbs,Link,Typography,Rating,Avatar,Grid,Tabs,Tab,Accordion,AccordionSummary,AccordionDetails,LinearProgress,Card,
     CardMedia,
-    CardContent,Button
+    CardContent,Button,Divider
   } from "@mui/material";
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -28,7 +28,59 @@ import errimg from '../assets/404.png';
 import Play from '../assets/Play.png';
 import Light from '../assets/light.png';
 import instructorRating from '../assets/Static2.png';
+import Reading from '../assets/Reading.png';
+
+import {useFetchCoursesQuery } from "../store";
+
+import SliderCards from '../components/SliderCards';
+import CardSkeleton from '../components/CourseSkeleton';
+
 function CourseDetails(){
+    const { data: coursesData, isLoading: coursesLoading, isSuccess: coursesSuccess } = useFetchCoursesQuery();
+
+    const renderedSkeleton=<Stack direction={'row'} spacing={5} >
+    <CardSkeleton/>
+    <CardSkeleton/>
+    <CardSkeleton/>
+  </Stack>;
+
+
+const coursesArray=[];
+if (coursesSuccess)
+{
+  
+    let courses_dict=coursesData.data.courses;
+    let tempObj;
+    for (const [key, value] of Object.entries(courses_dict)) {
+
+        // const newObj = {
+        //     key: key,
+        //     value: value,
+        //     // You can add more properties if needed
+        //   };
+    
+        
+        for(const [innerKey, innerValue] of Object.entries(value))
+        {
+            tempObj = {
+                course_id:innerValue.classified_product.course_id,
+                img_url:innerValue.classified_product.image_url,
+                title:innerValue.classified_product.title,
+                review_count:innerValue.reviews_number,
+                rating:innerValue.final_rating_from_reviews,
+                instructors:innerValue.classified_product.instructors, //array of id and name and profile picture
+                description:innerValue.classified_product.description,
+                price_after_discount:innerValue.price_after_discount,
+                original_price:innerValue.original_price
+            };
+
+            coursesArray.push(tempObj);
+
+        }
+    }
+}
+
+
 
     useEffect(() => {
         window.scrollTo(0, 0); // Reset scroll position when this page is navigated to
@@ -68,7 +120,9 @@ function CourseDetails(){
 
             reviews_list:data.data.reviews,
             image_url:data.data.classified_product.image_url?data.data.classified_product.image_url:errimg,
-            price:data.data.price_after_discount
+            price:data.data.price_after_discount,
+
+            quizzes:data.data.classified_product.quizzes
         }
         instructorAvatars=Course.instructors.map((instructor)=>{
             return(
@@ -137,14 +191,38 @@ function CourseDetails(){
             let sessions=section.sessions;
             let lectures=[];
             let assignments=[];
+
+            let quizzes=[];
+            let readings=[];
+
             let section_time=0;
+
+            let lectureAndReadingObj;
+
             for (const [, value] of Object.entries(sessions)) {
+
+                lectureAndReadingObj={
+                    id:value.course_session_id,
+                    duration:value.expected_time,
+                    duration_unit:value.expected_time_unit,
+                    title:value.title
+                }
+
+                if (value.content_type==='text')
+                {
+                    readings.push(lectureAndReadingObj)
+                }
+                else
+                {
+
+                    lectures.push(lectureAndReadingObj)
+                }
                 
                 if(value.quizzes.length > 0) //lectures exist and need concat to all list
                 {
                     for(const [,valueLecture] of Object.entries(value.quizzes))
                     {
-                        lectures.push(valueLecture);
+                        quizzes.push(valueLecture);
                     }
                 }
 
@@ -170,18 +248,41 @@ function CourseDetails(){
 
             let renderedLectures=lectures.map((lecture)=>{
                 return(
-                <Stack direction={'row'} spacing={2} alignItems='center'>
+                <Stack direction={'row'} spacing={2} alignItems='center' key={lecture.id} >
                         <Box 
                     component="img"
                     sx={{width:'3%'}}
                     src={Play}
                         />
-                        <Typography variant='small'>{lecture.title}</Typography>
+                        <Stack direction={'column'} spacing={0.5}>
+                            <Typography variant='small'>{lecture.title}</Typography>
+                            <Typography variant='small'>{lecture.duration}  {lecture.duration_unit}</Typography>
+                        </Stack>
 
 
                 </Stack>)
 
             });
+
+
+            let renderedReadings=readings.map((reading)=>{
+                return(
+                <Stack direction={'row'} spacing={2} alignItems='center' key={reading.id} >
+                        <Box 
+                    component="img"
+                    sx={{width:'3%'}}
+                    src={Reading}
+                        />
+                        <Stack direction={'column'} spacing={0.5}>
+                            <Typography variant='small'>{reading.title}</Typography>
+                            <Typography variant='small'>{reading.duration}   {reading.duration_unit}</Typography>
+                        </Stack>
+
+
+                </Stack>)
+
+            });
+
 
             let renderedAssignments=assignments.map((assignment)=>{
                 return(
@@ -197,6 +298,23 @@ function CourseDetails(){
                 </Stack>)
 
             });
+
+
+            let renderedquizzes=quizzes.map((quiz)=>{
+                return(
+                <Stack direction={'row'} spacing={2} alignItems='center'>
+                        <Box 
+                    component="img"
+                    sx={{width:'3%'}}
+                    src={Light}
+                        />
+                        <Typography variant='small'>{quiz.title}</Typography>
+
+
+                </Stack>)
+
+            });
+
 
             for (const [, value] of Object.entries(Course.reviews_list)){
                 reviewCounts[value.rating-1]=reviewCounts[value.rating-1]+1;
@@ -223,13 +341,59 @@ function CourseDetails(){
                 >
                     <Stack direction={'column'} spacing={2}>
                         <Typography variant='medium' fontWeight={1000}>{section.title}</Typography>
-                        <Typography variant='small'>{lectures.length} Lecture , {assignments.length} Assignments (Total {section_time}min) </Typography>
+                        <Stack direction={'row'}>
+                            {lectures.length?(<Typography variant='small'>{lectures.length} Lectures </Typography>):null}     
+
+                            {readings.length?(<Typography variant='small'>{readings.length} Readings </Typography>):null}      
+
+                            {quizzes.length?(<Typography variant='small'>{quizzes.length} Quizzes </Typography>):null}  
+
+                            {assignments.length?(<Typography variant='small'>{assignments.length} Assignments </Typography>):null}      
+
+                            {section_time?(<Typography variant='small'>(Total {section_time}min)</Typography>):null}      
+
+                        </Stack>
                     </Stack>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Stack direction={'column'} spacing={5}>
-                    {renderedLectures}
-                    {renderedAssignments}
+                        
+{renderedLectures.length?(<Stack direction={'column'} spacing={2}>
+                            <Typography variant='medium' fontWeight={1000}>
+                                {renderedLectures.length} Lectures
+                            </Typography>
+                            {renderedLectures}
+                            <Divider/>
+                        </Stack>):null
+}
+
+{renderedReadings.length?(<Stack direction={'column'} spacing={2}>
+                            <Typography variant='medium' fontWeight={1000}>
+                                {renderedReadings.length} Readings
+                            </Typography>
+                            {renderedReadings}
+                            <Divider/>
+                        </Stack>):null
+}
+
+{renderedquizzes.length?(<Stack direction={'column'} spacing={2}>
+                            <Typography variant='medium' fontWeight={1000}>
+                                {renderedquizzes.length} Quizzes
+                            </Typography>
+                            {renderedquizzes}
+                            <Divider/>
+                        </Stack>):null
+}
+
+{renderedAssignments.length?(<Stack direction={'column'} spacing={2}>
+                            <Typography variant='medium' fontWeight={1000}>
+                                {renderedAssignments.length} Assignments
+                            </Typography>
+                            {renderedAssignments}
+                            <Divider/>
+                        </Stack>):null
+}
+
                     </Stack>
                 </AccordionDetails>
               </Accordion>
@@ -262,7 +426,7 @@ function CourseDetails(){
           Courses
         </Link>,
         <Typography key="3" color="#28A09C">
-          {courseId}
+          {isSuccess?Course.title:'loading'}
         </Typography>,
       ];
     
@@ -454,9 +618,20 @@ function CourseDetails(){
                     <Typography variant='medium' fontWeight={1000}>
                         Syllabus
                     </Typography>
-                    <Typography variant='small'>
-                        {Course.sections_count} Sections ・{Course.lecture_count} lectures ・ {Course.assignments_count} Assignments・{Course.total_duration} h total length
-                    </Typography>
+                    
+                    <Stack direction={'row'} spacing={0.5}>
+                            {Course.sections_count?(<Typography variant='small'>{Course.sections_count} Sections </Typography>):null}     
+
+                            {Course.lecture_count?(<Typography variant='small'>{Course.lecture_count} Readings & lectures </Typography>):null}      
+
+                            {Course.quizzes.length?(<Typography variant='small'>{Course.quizzes.length} Quizzes </Typography>):null}  
+
+                            {Course.assignments_count?(<Typography variant='small'>{Course.assignments_count} Assignments </Typography>):null}      
+
+                            {Course.total_duration?(<Typography variant='small'>({Course.total_duration}h total length)</Typography>):null}      
+
+                    </Stack>
+
 
                     </Stack>
 
@@ -581,7 +756,7 @@ function CourseDetails(){
             <Box paddingLeft={10} paddingTop={10} id="Reviews">
                 <Typography variant='big' fontWeight={1000}>Reviews</Typography>
 
-                <Stack direction={'row'} paddingTop={4} spacing={80}>
+                <Stack direction={'row'} paddingTop={4} spacing={80} paddingBottom={10}>
                         <Box sx={{width:'80%'}}>
                             <Stack direction={'row'} alignItems={'center'} spacing={2}>
                                 <Typography fontSize={50}>{Course.rating}</Typography>
@@ -650,7 +825,14 @@ function CourseDetails(){
 
                 </Stack>
             </Box>
-
+            <Box style={{backgroundColor:"#F3F3F3"}}>
+                <Box style={{paddingLeft:100,paddingTop:50}}>
+                    <Typography variant='medium' fontWeight={1000} >More User Experience Design Courses</Typography>
+                </Box>
+                <Box style={{display:'flex',justifyContent:'center',alignItems:'center',paddingTop:50}}>
+                        {coursesLoading?renderedSkeleton:<SliderCards coursesArray={coursesArray}/>}
+                </Box>
+            </Box>
         <Footer/>
     </Box>):null;
 }

@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import SliderCards from "../components/SliderCards";
 import CustomTabs from '../components/CustomTabs';
 import {
-    Box, Stack, Typography,Button
+    Box, Stack, Typography,Button,Grid
   } from "@mui/material";
   
   
@@ -12,7 +12,7 @@ import {
   } from 'react-router-dom'
     
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import img1 from '../assets/img1.jpg';
 import  WhatsAppIcon  from '../assets/whatsapp.png';
 
@@ -24,6 +24,12 @@ import LaptopGirl from '../assets/laptopGirl.png';
 import { useFetchCategoriesQuery, useFetchCoursesQuery } from "../store";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CardSkeleton from "../components/CourseSkeleton";
+
+
+import Google from '../assets/Google.png';
+import Microsoft from '../assets/microsoft.png';
+import Intel from '../assets/intel.png';
+import Apple from '../assets/apple.png';
 function FirstPage(){
   useEffect(() => {
     window.scrollTo(0, 0); // Reset scroll position when this page is navigated to
@@ -73,7 +79,41 @@ function FirstPage(){
       }
   }
 
+let Clients=[Google,Microsoft,Intel,Apple,Google,Microsoft,Intel,Apple,Google,Microsoft,Google,Microsoft];
 
+const [viewAll,setViewAll]=useState(false);
+
+const handleViewClick=()=>{
+      setViewAll(!viewAll);
+};
+
+
+const renderedClients=viewAll?Clients.map((client)=>{
+  return(
+    <Grid item sm={3}>
+    <Box 
+        component="img"
+        sx={{
+          height: 40,
+          width: 40,
+        }}
+        src={client}
+      />
+  </Grid>)}):Clients.slice(0,4).map((client)=>{
+  return(
+    <Grid item sm={3}>
+    <Box 
+        component="img"
+        sx={{
+          height: 40,
+          width: 40,
+        }}
+        src={client}
+      />
+  </Grid>
+
+  )
+});
 
 return(
   <Box >
@@ -326,6 +366,52 @@ return(
       {coursesLoading?renderedSkeleton:<SliderCards coursesArray={coursesArray}/>}
     </Box>
     
+
+    <Box >
+      <Box style={{display: 'flex',justifyContent: 'center',alignItems: 'center' ,paddingTop:10}}>
+      <Typography variant="big" fontWeight={1000} color={"#FFBA00"}>Our Clients</Typography>      
+      </Box>
+      <Box style={{float:'right', paddingRight:50}}>
+        <Button onClick={handleViewClick}> {viewAll?<Typography variant="medium">View Less</Typography>:<Typography variant="medium">View All</Typography>}</Button>
+      </Box>
+
+
+      <Box  paddingLeft={15} paddingBottom={10}>
+        <Grid container  columnSpacing={15} rowSpacing={5} justifyContent='center' alignItems='center'>
+                    {renderedClients}
+        </Grid>
+        
+
+      </Box>
+
+
+
+      <Box sx={{backgroundColor:"#F3F3F3",display: 'flex', alignItems: 'center',justifyContent:'center',flexDirection:'column',padding:5}}>
+    
+        <Typography variant="big" color={'#FFBA00'} fontWeight={1000} >
+          Most Popular
+        </Typography>
+
+        <Typography variant="vsmall" paddingTop={2}>
+        Learn the latest skills to reach your       
+        </Typography>
+
+        <Typography variant="vsmall" paddingBottom={5}>
+        professional goals
+
+        </Typography>
+    
+      </Box>
+
+      <Box style={{display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:"#F3F3F3"}}>
+      {coursesLoading?renderedSkeleton:<SliderCards coursesArray={coursesArray}/>}
+      </Box>
+
+
+
+
+
+    </Box>
 
     
 
