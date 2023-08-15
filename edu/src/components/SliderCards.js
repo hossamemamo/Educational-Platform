@@ -33,7 +33,7 @@ function SliderCards({coursesArray}){
           
 
     return(
-        <Box sx={{maxWidth:1100,flex: 1}}>
+        <Box sx={{maxWidth:1100,flex: 1}} >
         <Carousel navButtonsAlwaysVisible autoPlay={false} 
         NextIcon={<ArrowForwardIosIcon/>}
         PrevIcon={<ArrowBackIosNewIcon/>}

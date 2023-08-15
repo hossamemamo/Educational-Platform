@@ -200,7 +200,7 @@ function CourseDetails(){
                     <Box style={{paddingLeft:100,paddingTop:50}}>
                         <Typography variant='medium' fontWeight={1000} >More User Experience Design Courses</Typography>
                     </Box>
-                    <Box style={{display:'flex',justifyContent:'center',alignItems:'center',paddingTop:50}}>
+                    <Box  style={{display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:"#F3F3F3",paddingTop:25}}>
                             {coursesLoading?<SkeletonDummy/>:<SliderCards coursesArray={coursesArray}/>}
                     </Box>
                 </Box>
