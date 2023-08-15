@@ -186,12 +186,12 @@ function CourseDetails(){
 
                 </Stack>
 
-                <Box  id='Instructors' style={{backgroundColor:'#F8F8F8',padding:10}}>
+                <Box  id='Instructors' style={{backgroundColor:'#F3F3F3',padding:20, marginTop:10}}>
                 <Typography variant='medium' fontWeight={1000}>Instructors</Typography>
                     <InstructorsView Course={Course} isSuccess={isSuccess}/>
                 </Box>
 
-                <Box  paddingTop={10} id="Reviews">
+                <Box  padding={2} id="Reviews">
                     <ReviewsAndComments Course={Course} isSuccess={isSuccess}/>
                 </Box>
 
