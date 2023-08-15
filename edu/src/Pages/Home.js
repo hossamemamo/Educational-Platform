@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import SliderCards from "../components/SliderCards";
 import CustomTabs from '../components/CustomTabs';
 import {
-    Box, Stack, Typography,Button,Grid
+    Box, Stack, Typography,Button,Grid,Container
   } from "@mui/material";
   
   
@@ -23,14 +23,13 @@ import LaptopGirl from '../assets/laptopGirl.png';
 
 import { useFetchCategoriesQuery, useFetchCoursesQuery } from "../store";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import CardSkeleton from "../components/CourseSkeleton";
-
+import SkeletonDummy from "../components/SkeletonDummy";
 
 import Google from '../assets/Google.png';
 import Microsoft from '../assets/microsoft.png';
 import Intel from '../assets/intel.png';
 import Apple from '../assets/apple.png';
-function FirstPage(){
+function Home(){
   useEffect(() => {
     window.scrollTo(0, 0); // Reset scroll position when this page is navigated to
   }, []);
@@ -38,11 +37,6 @@ function FirstPage(){
   const { data: coursesData, isLoading: coursesLoading, isSuccess: coursesSuccess } = useFetchCoursesQuery();
   const { data: categoryData, isSuccess: categorySuccess } = useFetchCategoriesQuery();
 
-  const renderedSkeleton=<Stack direction={'row'} spacing={5} >
-    <CardSkeleton/>
-    <CardSkeleton/>
-    <CardSkeleton/>
-  </Stack>;
 
     const coursesArray=[];
   if (coursesSuccess)
@@ -50,16 +44,10 @@ function FirstPage(){
     
       let courses_dict=coursesData.data.courses;
       let tempObj;
-      for (const [key, value] of Object.entries(courses_dict)) {
+      for (const [, value] of Object.entries(courses_dict)) {
 
-          // const newObj = {
-          //     key: key,
-          //     value: value,
-          //     // You can add more properties if needed
-          //   };
-      
           
-          for(const [innerKey, innerValue] of Object.entries(value))
+          for(const [, innerValue] of Object.entries(value))
           {
               tempObj = {
                   course_id:innerValue.classified_product.course_id,
@@ -116,7 +104,7 @@ const renderedClients=viewAll?Clients.map((client)=>{
 });
 
 return(
-  <Box >
+    <Container maxWidth="xlg">
     <Header/>
 
     <Box sx={{  display: 'flex', alignItems: 'center',paddingTop:12}}>
@@ -276,7 +264,6 @@ return(
                 sx={{
                 height: 470,
                 width:470,
-                marginLeft:10
                       }}
                 alt="laptop girl"
                 src={LaptopGirl}
@@ -363,7 +350,7 @@ return(
 
 
     <Box style={{display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:"#F3F3F3"}}>
-      {coursesLoading?renderedSkeleton:<SliderCards coursesArray={coursesArray}/>}
+      {coursesLoading?<SkeletonDummy/>:<SliderCards coursesArray={coursesArray}/>}
     </Box>
     
 
@@ -404,7 +391,7 @@ return(
       </Box>
 
       <Box style={{display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:"#F3F3F3"}}>
-      {coursesLoading?renderedSkeleton:<SliderCards coursesArray={coursesArray}/>}
+      {coursesLoading?<SkeletonDummy/>:<SliderCards coursesArray={coursesArray}/>}
       </Box>
 
 
@@ -419,9 +406,9 @@ return(
 
     
     <Footer/>
-  </Box>
+    </Container>
 );
 
 };
 
-export default FirstPage;
+export default Home;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {AppBar,Toolbar,Box,Button,Stack,IconButton,Modal,Menu,MenuItem } from "@mui/material";
+import {AppBar,Toolbar,Box,Button,Stack,IconButton,Modal,Menu,MenuItem, Typography } from "@mui/material";
 
 import {
   Link
@@ -7,7 +7,7 @@ import {
 
 
 
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import ShoppingCartOutlinedIcon from '../assets/cart.png';
 import Logo from "../assets/Logo.png";
 import UserIcon from '../assets/user.png';
 
@@ -60,32 +60,34 @@ function Header(){
 
     return (
         <React.Fragment>
-            <AppBar sx={{background: white}} style={{minHeight: '102px'}}>
-                <Toolbar  style={{marginTop: "18px",display:'flex',alignItems:'center',justifyContent:'space-evenly'}}>
-
+            <AppBar sx={{background: white,justifyContent:'center'}} style={{minHeight: '102px'}}>
+                <Toolbar sx={{justifyContent:'space-between'}}>
+              
                  <Link to="/">   
-                      <Box 
-                  component="img"
-                  sx={{
-                  height: 33,
-                  width:150,
-                  marginLeft: "80px",
-                        }}
-                  alt="Your logo."
-                  src={Logo}
-              />
-            </Link>
+                  <Box 
+                    component="img"
+                    sx={{
+                    height: 33,
+                    width:150,
+                  }}
+                    src={Logo}
+                    />
+                  </Link>
     <SearchBar/>
 
-    <Stack spacing={3} direction="row" > 
+    <Stack spacing={2} direction="row" > 
     <IconButton>
-          <ShoppingCartOutlinedIcon sx={{color: green}}  />
-      </IconButton> 
+          <Box
+           component="img"
+           sx={{height:25,width:25}}
+           src={ShoppingCartOutlinedIcon}
+          />
+    </IconButton> 
       
       {user_token == null ?(
         <>
-            <Button variant="text" onClick={handleLoginButton}>Login</Button>
-            <Button variant="contained" style={{background: green}}>Sign Up</Button>
+            <Button variant="text" onClick={handleLoginButton}><Typography variant='small' color={green}>Login</Typography></Button>
+            <Button variant="contained" style={{background: green}}> <Typography variant='small' >Sign Up</Typography></Button>
         </>
       ):<>
       <Button onClick={handleClick}>
@@ -96,7 +98,6 @@ function Header(){
                         height: 33,
                         width:33,
                             }}
-                        alt="Your logo."
                         src={UserIcon}
                     />
 

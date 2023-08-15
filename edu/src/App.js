@@ -1,5 +1,5 @@
-import FirstPage from './Pages/firstPage';
-import SecondPage from './Pages/secondPage';
+import Home from './Pages/Home';
+import Courses from './Pages/Courses';
 import CourseDetails from './Pages/CourseDetails';
 import {
   BrowserRouter,
@@ -103,8 +103,8 @@ function App() {
 
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<FirstPage />} />
-          <Route path="/courses" element={<SecondPage />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:courseId" element={<CourseDetails/>}/>
         </Routes>
       </BrowserRouter>

@@ -4,23 +4,14 @@ import Footer from '../components/Footer';
 import { useFetchCoursesQuery } from "../store";
 
 import {
-    Box, Stack,Pagination
+    Box, Stack,Pagination,Container
   } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
-import CardSkeleton from "../components/CourseSkeleton";
-
+import SkeletonDummy from "../components/SkeletonDummy";
   
 
-function SecondPage(){
-
-    const renderedSkeleton=<Stack direction={'row'} spacing={5} justifyContent='center'>
-    <CardSkeleton/>
-    <CardSkeleton/>
-    <CardSkeleton/>
-    <CardSkeleton/>
-    </Stack>;
-
+function Courses(){
     useEffect(() => {
         window.scrollTo(0, 0); // Reset scroll position when this page is navigated to
       }, []);
@@ -71,11 +62,12 @@ function SecondPage(){
     };
 
     return (
-        <Box>
+        <Container maxWidth="xlg">
+
             <Header/>
 
             <Stack direction={'column'} spacing={10} paddingTop={20}>
-                {isLoading?renderedSkeleton:<CourseContainer courses={paginatedArray[page-1]}/>}
+                {isLoading?<SkeletonDummy/>:<CourseContainer courses={paginatedArray[page-1]}/>}
 
                 <Stack alignItems="center" >
                     <Pagination count={paginatedArray.length} size="large" page={page} onChange={handlePageChange}  />
@@ -83,9 +75,9 @@ function SecondPage(){
             </Stack>
 
             <Footer/>
+        </Container>
 
-        </Box>
     )
 }
 
-export default SecondPage;
+export default Courses;
